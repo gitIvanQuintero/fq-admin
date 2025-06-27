@@ -1,12 +1,27 @@
 import { useState } from 'react';
-import { ChevronDown, Home, Calendar, UserCircle, ClipboardList } from 'lucide-react';
+import { ChevronDown, Home, Calendar, UserCircle, ClipboardList, Sparkles } from 'lucide-react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, usePage } from '@inertiajs/react';
 
 
 
 export default function Sidebar({ collapsed }) {
-    const [openMenu, setOpenMenu] = useState(null);
+    const { url } = usePage();
+
+    const isActive = (path) => url.startsWith(path);
+
+    // Detectar submenús abiertos en función del path actual
+    const getInitialOpenMenu = () => {
+        if (isActive('/ecommerce') || isActive('/analytics') || isActive('/marketing') || isActive('/stocks') || isActive('/saas')) {
+            return 'crm';
+        }
+        if (isActive('/task-list') || isActive('/task-kanban')) {
+            return 'task';
+        }
+        return null;
+    };
+
+    const [openMenu, setOpenMenu] = useState(getInitialOpenMenu);
 
     const toggleMenu = (menu) => {
         setOpenMenu(prev => (prev === menu ? null : menu));
@@ -36,43 +51,52 @@ export default function Sidebar({ collapsed }) {
                             <h2 className="mb-4 text-xs uppercase text-gray-400">Menu</h2>
                             <ul className="flex flex-col gap-4">
 
-                                {/* Dashboard Dropdown */}
+                                {/* Home */}
                                 <li>
-                                    <button
-                                        onClick={() => toggleMenu('dashboard')}
-                                        className="menu-item group flex w-full items-center gap-3 transition-colors hover:bg-blue-500 px-3 py-2.5 rounded-lg"
-                                    >
+                                    <Link href="/dashboard" className={`menu-item group flex items-center gap-3 hover:bg-blue-500 px-3 py-2.5 rounded-lg ${url.startsWith('/dashboard') ? 'bg-blue-600 text-white' : ''}`}>
                                         <Home className="w-5 h-5" />
                                         {!collapsed && (
+                                            <div>
+                                                <span>Inicio</span>
+                                            </div>
+                                        )}
+                                    </Link>
+                                </li>
+
+                                {/* CRM Dropdown */}
+                                <li>
+                                    <button
+                                        onClick={() => toggleMenu('crm')}
+                                        className="menu-item group flex w-full items-center gap-3 transition-colors hover:bg-blue-500 px-3 py-2.5 rounded-lg"
+                                    >
+                                        <Sparkles className="w-5 h-5" />
+                                        {!collapsed && (
                                             <div className="flex flex-1 items-center">
-                                                <span className="flex-1 text-left">Dashboard</span>
-                                                <ChevronDown className={`transition-transform ${openMenu === 'dashboard' ? 'rotate-180' : ''}`} />
+                                                <span className="flex-1 text-left">CRM</span>
+                                                <ChevronDown className={`transition-transform ${openMenu === 'crm' ? 'rotate-180' : ''}`} />
                                             </div>
                                         )}
                                     </button>
                                     {!collapsed && (
                                         <div>
                                             <ul
-                                                className={`ml-8 mt-2 flex flex-col space-y-1 overflow-hidden transition-all duration-300 ${openMenu === 'dashboard' ? 'max-h-[500px]' : 'max-h-0'
+                                                className={`ml-8 mt-2 flex flex-col space-y-1 overflow-hidden transition-all duration-300 ${openMenu === 'crm' ? 'max-h-[500px]' : 'max-h-0'
                                                     }`}
                                             >
                                                 <li>
-                                                    <a href="/" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium  hover:bg-blue-500">Ecommerce</a>
+                                                    <Link href="/ecommerce" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium  hover:bg-blue-500 ${url.startsWith('/ecommerce') ? 'bg-blue-600 text-white' : ''}`}>Ecommerce</Link>
                                                 </li>
                                                 <li>
-                                                    <a href="/analytics" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">Analytics</a>
+                                                    <Link href="/analytics" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/analytics') ? 'bg-blue-600 text-white' : ''}`}>Analytics</Link>
                                                 </li>
                                                 <li>
-                                                    <a href="/marketing" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">Marketing</a>
+                                                    <Link href="/marketing" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/marketing') ? 'bg-blue-600 text-white' : ''}`}>Marketing</Link>
                                                 </li>
                                                 <li>
-                                                    <a href="/crm" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">CRM</a>
+                                                    <Link href="/stocks" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/stocks') ? 'bg-blue-600 text-white' : ''}`}>Stocks</Link>
                                                 </li>
                                                 <li>
-                                                    <a href="/stocks" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">Stocks</a>
-                                                </li>
-                                                <li>
-                                                    <a href="/saas" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">SaaS</a>
+                                                    <Link href="/saas" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/saas') ? 'bg-blue-600 text-white' : ''}`}>SaaS</Link>
                                                 </li>
                                             </ul>
                                         </div>
@@ -80,24 +104,22 @@ export default function Sidebar({ collapsed }) {
                                 </li>
 
                                 {/* Calendar */}
-                                <li>
-                                    <a href="/calendar" className="menu-item group flex items-center gap-3 hover:bg-blue-500 px-3 py-2.5 rounded-lg">
-                                        <Calendar className="w-5 h-5" />
-                                        {!collapsed && (
-                                            <div>
-                                                <span>Calendar</span>
-                                            </div>
-                                        )}
-                                    </a>
-                                </li>
+                                <Link
+                                    href="/calendar"
+                                    className={`menu-item group flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-500 ${url.startsWith('/calendar') ? 'bg-blue-600 text-white' : ''
+                                        }`}
+                                >
+                                    <Calendar className="w-5 h-5" />
+                                    {!collapsed && <span>Calendar</span>}
+                                </Link>
 
                                 {/* User Profile */}
                                 <li>
-                                    <a href="/profile" className="menu-item group flex items-center gap-3 hover:bg-blue-500 px-3 py-2.5 rounded-lg">
+                                    <a href="/profile" className={`menu-item group flex items-center gap-3 hover:bg-blue-500 px-3 py-2.5 rounded-lg ${url.startsWith('/profile') ? 'bg-blue-600 text-white' : ''}`}>
                                         <UserCircle className="w-5 h-5" />
                                         {!collapsed && (
                                             <div>
-                                                <span>User Profile</span>
+                                                <span>Perfil de usuario</span>
                                             </div>
                                         )}
                                     </a>
@@ -124,10 +146,10 @@ export default function Sidebar({ collapsed }) {
                                                     }`}
                                             >
                                                 <li>
-                                                    <a href="/task-list" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">List</a>
+                                                    <Link href="/task-list" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/task-list') ? 'bg-blue-600 text-white' : ''}`}>List</Link>
                                                 </li>
                                                 <li>
-                                                    <a href="/task-kanban" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500">Kanban</a>
+                                                    <Link href="/task-kanban" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/task-kanban') ? 'bg-blue-600 text-white' : ''}`}>Kanban</Link>
                                                 </li>
                                             </ul>
                                         </div>
@@ -151,7 +173,7 @@ export default function Sidebar({ collapsed }) {
                             href="https://tailadmin.com/pricing"
                             target="_blank"
                             rel="nofollow"
-                            className="flex items-center justify-center p-3 font-medium text-white rounded-lg bg-brand-500 text-sm bg-blue-500 hover:bg-blue-600"
+                            className="flex items-center justify-center p-3 font-medium text-white rounded-lg bg-brand-500 text-sm bg-blue-600 hover:bg-blue-500"
                         >
                             Purchase Plan
                         </a>

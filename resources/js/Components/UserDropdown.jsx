@@ -26,7 +26,7 @@ const UserDropdown = () => {
             >
                 <span className="mr-2 overflow-hidden rounded-full h-10 w-10">
                     <img
-                        src={auth.user.avatar || ''}
+                        src={auth.user.avatar || '/images/defaul-profile.png'}
                         alt="User Avatar"
                         className="object-cover h-full w-full"
                     />

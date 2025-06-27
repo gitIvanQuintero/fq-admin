@@ -80,11 +80,11 @@ export default function Navbar({ user, toggleSidebar }) {
                     {/* Theme toggle button */}
                     <button
                         onClick={toggleTheme}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border bg-white text-gray-500 hover:text-gray-700 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 hover:bg-blue-500 dark:hover:text-white"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border bg-white text-gray-500 hover:text-gray-700 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 hover:bg-blue-500 dark:hover:text-white dark:hover:bg-blue-500"
                     >
                         {isDark ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
-                    <button className="relative flex items-center justify-center w-10 h-10 text-gray-500 border rounded-full bg-white hover:text-gray-700 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 hover:bg-blue-500 dark:hover:text-white">
+                    <button className="relative flex items-center justify-center w-10 h-10 text-gray-500 border rounded-full bg-white hover:text-gray-700 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 hover:bg-blue-500 dark:hover:text-white dark:hover:bg-blue-500">
                         <Bell className="w-5 h-5" />
                     </button>
                     <UserDropdown />

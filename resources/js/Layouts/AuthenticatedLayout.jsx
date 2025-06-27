@@ -33,12 +33,12 @@ export default function AuthenticatedLayout({ header, children }) {
                 <Navbar toggleSidebar={toggleSidebar} />
                 {header && (
                     <header className="bg-white shadow">
-                        <div className="px-4 py-6 sm:px-6 lg:px-8  bg-white dark:bg-gray-900 text-gray-900 dark:text-stone-50 ">
+                        <div className="px-4 py-6 sm:px-6 lg:px-8  bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-stone-50 ">
                             {header}
                         </div>
                     </header>
                 )}
-                <main className="p-4 flex-1 bg-white dark:bg-gray-900">{children}</main>
+                <main className="p-4 flex-1 bg-gray-50  dark:bg-gray-900">{children}</main>
                 <Footer />
             </div>
         </div>

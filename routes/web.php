@@ -24,4 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::fallback(function () {
+    return Inertia::render('ErrorPage', ['status' => 404])->toResponse(request())->setStatusCode(404);
+});
+
+require __DIR__ . '/auth.php';
