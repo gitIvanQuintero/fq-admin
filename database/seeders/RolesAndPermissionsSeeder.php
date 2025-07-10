@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use Faker\Factory as Faker;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -28,7 +29,7 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // Crear roles
-        $admin = Role::firstOrCreate(['name' => 'Super administrador']);
+        $admin = Role::firstOrCreate(['name' => 'Super Administrador']);
         $editor = Role::firstOrCreate(['name' => 'Administrador']);
         $viewer = Role::firstOrCreate(['name' => 'Usuario']);
 
@@ -45,13 +46,13 @@ class RolesAndPermissionsSeeder extends Seeder
             'view dashboard',
         ]);
 
-        // Crear usuarios
+        // Crear usuarios específicos
         $users = [
             [
                 'name' => 'Admin User',
                 'email' => 'super_admin@fq.com',
                 'password' => 'Admin789456',
-                'role' => 'Super administrador',
+                'role' => 'Super Administrador',
             ],
             [
                 'name' => 'Editor User',
@@ -77,6 +78,19 @@ class RolesAndPermissionsSeeder extends Seeder
             );
 
             $user->assignRole($data['role']);
+        }
+
+        // Crear 30 usuarios aleatorios con rol 'Usuario'
+        $faker = Faker::create();
+
+        for ($i = 1; $i <= 300; $i++) {
+            $randomUser = User::create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => Hash::make('password'), // contraseña por defecto
+            ]);
+
+            $randomUser->assignRole('Usuario');
         }
     }
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, Home, Calendar, UserCircle, ClipboardList, Sparkles } from 'lucide-react';
+import { ChevronDown, Home, Calendar, UserCircle, ClipboardList, Sparkles, Settings } from 'lucide-react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, usePage } from '@inertiajs/react';
 
@@ -62,7 +62,53 @@ export default function Sidebar({ collapsed }) {
                                         )}
                                     </Link>
                                 </li>
-
+                                {/* Administración Dropdown */}
+                                <li>
+                                    <button
+                                        onClick={() => toggleMenu('admin')}
+                                        className="menu-item group flex w-full items-center gap-3 transition-colors hover:bg-blue-500 px-3 py-2.5 rounded-lg"
+                                    >
+                                        <Settings className="w-5 h-5" />
+                                        {!collapsed && (
+                                            <div className="flex flex-1 items-center">
+                                                <span className="flex-1 text-left">Administración</span>
+                                                <ChevronDown className={`transition-transform ${openMenu === 'admin' ? 'rotate-180' : ''}`} />
+                                            </div>
+                                        )}
+                                    </button>
+                                    {!collapsed && (
+                                        <div>
+                                            <ul
+                                                className={`ml-8 mt-2 flex flex-col space-y-1 overflow-hidden transition-all duration-300 ${openMenu === 'admin' ? 'max-h-[500px]' : 'max-h-0'}`}
+                                            >
+                                                <li>
+                                                    <Link
+                                                        href="/admin/users"
+                                                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/admin/users') ? 'bg-blue-600 text-white' : ''}`}
+                                                    >
+                                                        Usuarios
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link
+                                                        href="/admin/roles"
+                                                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/admin/roles') ? 'bg-blue-600 text-white' : ''}`}
+                                                    >
+                                                        Roles de Usuario
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link
+                                                        href="/admin/permissions"
+                                                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 ${url.startsWith('/admin/permissions') ? 'bg-blue-600 text-white' : ''}`}
+                                                    >
+                                                        Permisos del Sistema
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
+                                </li>
                                 {/* CRM Dropdown */}
                                 <li>
                                     <button
